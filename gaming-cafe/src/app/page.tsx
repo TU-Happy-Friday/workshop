@@ -10,7 +10,85 @@ interface Computer {
   available: boolean;
 }
 
+interface Game {
+  id: number;
+  name: string;
+  nameTH: string;
+  genre: string;
+  genreTH: string;
+  playerCount: string;
+  trending: boolean;
+}
+
+interface FriendActivity {
+  id: number;
+  friendName: string;
+  currentGame: string;
+  currentGameTH: string;
+  computerNumber: string;
+  startTime: string;
+}
+
 export default function Home() {
+  // Mock data for popular games
+  const [popularGames] = useState<Game[]>([
+    {
+      id: 1,
+      name: 'Valorant',
+      nameTH: 'วาโลแรนท์',
+      genre: 'FPS',
+      genreTH: 'ยิงมุมมองบุคคลที่หนึ่ง',
+      playerCount: '5v5',
+      trending: true
+    },
+    {
+      id: 2,
+      name: 'League of Legends',
+      nameTH: 'ลีกออฟเลเจนด์',
+      genre: 'MOBA',
+      genreTH: 'ต่อสู้ออนไลน์',
+      playerCount: '5v5',
+      trending: true
+    },
+    {
+      id: 3,
+      name: 'PUBG',
+      nameTH: 'พับจี',
+      genre: 'Battle Royale',
+      genreTH: 'แบทเทิลรอยัล',
+      playerCount: '1-4',
+      trending: true
+    },
+  ]);
+
+  // Mock data for friend activity
+  const [friendActivity] = useState<FriendActivity[]>([
+    {
+      id: 1,
+      friendName: 'สมชาย',
+      currentGame: 'Valorant',
+      currentGameTH: 'วาโลแรนท์',
+      computerNumber: 'PC-001',
+      startTime: '14:30'
+    },
+    {
+      id: 2,
+      friendName: 'สมหญิง',
+      currentGame: 'League of Legends',
+      currentGameTH: 'ลีกออฟเลเจนด์',
+      computerNumber: 'PC-004',
+      startTime: '15:00'
+    },
+    {
+      id: 3,
+      friendName: 'ประยุทธ์',
+      currentGame: 'PUBG',
+      currentGameTH: 'พับจี',
+      computerNumber: 'PC-002',
+      startTime: '14:45'
+    },
+  ]);
+
   const [computers] = useState<Computer[]>([
     { id: 1, name: 'PC-001', specs: 'RTX 4070, i7-13700K, 32GB RAM', pricePerHour: 60, available: true },
     { id: 2, name: 'PC-002', specs: 'RTX 4060, i5-13600K, 16GB RAM', pricePerHour: 50, available: true },
@@ -46,6 +124,64 @@ export default function Home() {
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        {/* Popular Games Section */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-orange-400 mb-4">🔥 เกมยอดนิยม</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {popularGames.map((game) => (
+              <div
+                key={game.id}
+                className="bg-zinc-900/80 backdrop-blur-sm rounded-xl p-4 border border-orange-800 hover:border-orange-600 transition-all"
+              >
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-lg font-bold text-white">{game.nameTH}</h3>
+                  {game.trending && (
+                    <span className="px-2 py-1 bg-orange-500 text-white text-xs font-semibold rounded-full animate-pulse">
+                      HOT
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-gray-400 mb-1">{game.name}</p>
+                <div className="flex justify-between items-center mt-3">
+                  <span className="px-2 py-1 bg-orange-900/50 text-orange-300 text-xs rounded">
+                    {game.genreTH}
+                  </span>
+                  <span className="text-xs text-gray-400">{game.playerCount}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Friend Activity Section */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-orange-400 mb-4">👥 เพื่อนที่กำลังเล่น</h2>
+          <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl p-4 border border-orange-800">
+            <div className="space-y-3">
+              {friendActivity.map((friend) => (
+                <div
+                  key={friend.id}
+                  className="flex justify-between items-center p-3 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-all"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold">
+                      {friend.friendName.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold">{friend.friendName}</p>
+                      <p className="text-sm text-gray-400">{friend.currentGameTH}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-orange-400 font-semibold text-sm">{friend.computerNumber}</p>
+                    <p className="text-xs text-gray-400">เริ่ม {friend.startTime}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div className="grid md:grid-cols-2 gap-8">
           {/* Computer List */}
           <div className="bg-zinc-900/80 backdrop-blur-sm rounded-2xl p-6 border border-orange-800">
